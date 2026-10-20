@@ -8,8 +8,8 @@ namespace CarBook.Domain.Entities
 {
     public class Feature
     {
-        public int FeauteID { get; set; }
-        public string Name { get; set; }
+        public int FeatureID { get; set; }
+        public string FeatureName { get; set; }
         public List<CarFeature> CarFeatures { get; set; }
     }
 }
