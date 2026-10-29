@@ -21,7 +21,8 @@ namespace CarBook.WebApi.Controllers
         {
             var values = await _mediator.Send(new GetFeatureQuery());
             return Ok(values);
-        }
+        
+                }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFeature(int id)
         {
