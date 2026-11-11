@@ -2,9 +2,9 @@
 
 namespace CarBook.WebUI.ViewComponents.BlogViewComponents
 {
-    public class _BlogDetailCategoryViewComponentPartial:ViewComponent
+    public class _BlogDetailsAuthorAboutComponentPartial:ViewComponent
     {
-        public  IViewComponentResult Invoke()
+        public IViewComponentResult Invoke()
         {
             return View();
         }
