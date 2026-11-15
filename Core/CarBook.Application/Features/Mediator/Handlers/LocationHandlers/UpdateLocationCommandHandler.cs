@@ -22,7 +22,7 @@ namespace CarBook.Application.Features.Mediator.Handlers.LocationHandlers
         public async Task Handle(UpdateLocationCommand request, CancellationToken cancellationToken)
         {
             var values = await _repository.GetByIdAsync(request.LocationID);
-            values.Name= request.Name;
+            values.Name = request.Name;
             await _repository.UpdateAsync(values);
         }
     }

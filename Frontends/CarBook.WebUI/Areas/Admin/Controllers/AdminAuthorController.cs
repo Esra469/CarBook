@@ -57,7 +57,6 @@ namespace CarBook.WebUI.Areas.Admin.Controllers
             return View();
         }
 
-        //Sil metodu şimdilik çalışmıyor
         [Route("RemoveAuthor/{id}")]
         public async Task<IActionResult> RemoveAuthor(int id)
         {
