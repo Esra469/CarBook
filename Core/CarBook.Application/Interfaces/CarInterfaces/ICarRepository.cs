@@ -12,6 +12,7 @@ namespace CarBook.Application.Interfaces.CarInterfaces
         List<Car> GetCarListWithBrands();
         //son 5 arabayı markası ile beraber getir
         List<Car> GetLast5CarWithBrands();
-       
+
+        int GetCarCount();
     }
 }
