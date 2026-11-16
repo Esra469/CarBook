@@ -1,5 +1,6 @@
 ﻿using CarBook.Application.Interfaces.StatisticsInterfaces;
 using CarBookPersistence.Context;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,27 @@ namespace CarBookPersistence.Repositories.StatisticsRepositories
 
         public string GetBrandNameByMaxCar()
         {
-            throw new NotImplementedException();
+            var values = _context.Cars.GroupBy(x => x.BrandID).Select(y => new
+            {
+                BrandID = y.Key,
+                Count = y.Count(),
+
+            }).OrderByDescending(z => z.Count).Take(1).FirstOrDefault();
+            string brandName=_context.Brands.Where(x=>x.BrandID==values.BrandID).Select(y=>y.Name).FirstOrDefault();
+            return brandName;
+
         }
 
         public string GetBrandTitleByMaxBlogComment()
         {
-            throw new NotImplementedException();
+            var values = _context.Comments.GroupBy(x => x.BlogID).Select(y => new
+            {
+                BlogID=y.Key,
+                Count= y.Count(),
+
+            }).OrderByDescending(z=>z.Count).Take(1).FirstOrDefault();
+            string blogName=_context.Blogs.Where(x=>x.BlogID==values.BlogID).Select(y=>y.Title).FirstOrDefault();
+            return blogName;
         }
 
         public int GetAuthorCount()
@@ -69,12 +85,25 @@ namespace CarBookPersistence.Repositories.StatisticsRepositories
 
         public string GetCarBrandAndModelByRentPriceDailyMax()
         {
-            throw new NotImplementedException();
+            var result = _context.CarPricings
+     .Where(x => x.Pricing.Name == "Günlük") // Günlük fiyatlandırmaya sahip olanlar
+     .OrderByDescending(x => x.Amount)       // Fiyata göre büyükten küçüğe sırala
+     .Select(y => y.Car.Brand.Name + " " + y.Car.Model) // Marka ve modeli birleştir
+     .FirstOrDefault();                      // En yüksek fiyatlı ilk kaydı al (yoksa null döner)
+
+            return result ?? "Veri Bulunamadı";
         }
 
         public string GetCarBrandAndModelByRentPriceDailyMin()
         {
-            throw new NotImplementedException();
+            var result = _context.CarPricings
+    .Where(x => x.Pricing.Name == "Günlük") // Günlük fiyatlandırmaya sahip olanlar
+    .OrderBy(x => x.Amount)                 // Fiyata göre küçükten büyüğe sırala (En düşük fiyat)
+    .Select(y => y.Car.Brand.Name + " " + y.Car.Model) // Marka ve modeli birleştir
+    .FirstOrDefault();                      // En düşük fiyatlı ilk kaydı al (yoksa null döner)
+
+            return result ?? "Veri Bulunamadı";
+
         }
 
         public int GetCarCount()
