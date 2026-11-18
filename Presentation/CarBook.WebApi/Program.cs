@@ -22,8 +22,28 @@ using CarBookPersistence.Repositories.CommentRepositories;
 using CarBookPersistence.Repositories.RentACarRepositories;
 using CarBookPersistence.Repositories.StatisticsRepositories;
 using CarBookPersistence.Repositories.TagCloudRepositories;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+{
+    opt.RequireHttpsMetadata = false;
+    opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidAudience = "http://localhost",
+       // ValidIssuer="http://localhost",
+        ClockSkew = TimeSpan.Zero,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("carboocarbook01")),
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true
+
+    };
+});
+
 
 // Add services to the container.
 
