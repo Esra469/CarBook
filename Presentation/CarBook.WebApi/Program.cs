@@ -14,6 +14,7 @@ using CarBook.Application.Interfaces.StatisticsInterfaces;
 using CarBook.Application.Interfaces.TagCloudInterfaces;
 using CarBook.Application.Services;
 using CarBook.Application.Tools;
+using CarBook.WebApi.Hubs;
 using CarBookPersistence.Context;
 using CarBookPersistence.Repositories;
 using CarBookPersistence.Repositories.BlogRepositories;
@@ -29,6 +30,17 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors(opt =>
+{
+    opt.AddPolicy("CorsPolicy", builder =>
+    {
+        builder.AllowAnyHeader()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed((host) => true)
+        .AllowCredentials();
+    });
+});
+builder.Services.AddSignalR();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
@@ -45,7 +57,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     };
 });
 
-
+#region MediatorRegistration
 // Add services to the container.
 
 //controller alanýndaki handlerlarý buradan alýp çalýþtýrmayý deneyceðiz
@@ -101,6 +113,9 @@ builder.Services.AddScoped<CreateContactCommandHandler>();
 builder.Services.AddScoped<UpdateContactCommandHandler>();
 builder.Services.AddScoped<RemoveContactCommandHandler>();
 
+#endregion
+
+
 builder.Services.AddApplicaitonService(builder.Configuration);
 
 builder.Services.AddControllers();
@@ -117,10 +132,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors("CorsPolicy");
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<CarHub>("/carhub");
 
 app.Run();
