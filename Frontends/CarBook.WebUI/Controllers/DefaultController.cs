@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace CarBook.WebUI.Controllers
 {
@@ -17,7 +18,11 @@ namespace CarBook.WebUI.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
+            var token =User.Claims.FirstOrDefault(x=>x.Type=="accessToken")?.Value;
+            if(token != null)
+            {
             var client = _httpClientFactory.CreateClient();
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var responseMessage = await client.GetAsync("http://localhost:5011/api/Locations");
             
              var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -29,7 +34,10 @@ namespace CarBook.WebUI.Controllers
                                                 Text = x.Name,
                                                 Value = x.LocationID.ToString()
                                             }).ToList();
-            ViewBag.v = values2; 
+            ViewBag.v = values2;
+            }
+
+             
             return View();
         }
         [HttpPost]
