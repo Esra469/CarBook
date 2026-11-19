@@ -8,6 +8,10 @@ namespace CarBook.Application.Tools
 {
     public class JwtTokenDefaults
     {
-        //eklencek
+        public const string ValidAudience = "http://localhost";
+        public const string Key = "CarBook+*010203CARBOOK01+*..020304CarBookProje";
+        public const int Expire = 3;
+        public const string ValidIssuer = "";//"http://localhost";
+
     }
 }

@@ -13,6 +13,7 @@ using CarBook.Application.Interfaces.RentACarInterfaces;
 using CarBook.Application.Interfaces.StatisticsInterfaces;
 using CarBook.Application.Interfaces.TagCloudInterfaces;
 using CarBook.Application.Services;
+using CarBook.Application.Tools;
 using CarBookPersistence.Context;
 using CarBookPersistence.Repositories;
 using CarBookPersistence.Repositories.BlogRepositories;
@@ -34,10 +35,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     opt.RequireHttpsMetadata = false;
     opt.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
-        ValidAudience = "http://localhost",
-       // ValidIssuer="http://localhost",
+        ValidAudience = JwtTokenDefaults.ValidAudience,
+        ValidIssuer=JwtTokenDefaults.ValidIssuer,
         ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("carboocarbook01")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key)),
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
 
@@ -117,7 +118,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
