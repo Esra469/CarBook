@@ -12,7 +12,7 @@ namespace CarBookPersistence.Context
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;initial Catalog=UdemyCarBookDb;integrated Security=true;TrustServerCertificate=True;");
+            //Veritabanı bağlantısı
 
         }
         //Oluşturduğumuz tüm entityleri buradan veritabanına ilettim
